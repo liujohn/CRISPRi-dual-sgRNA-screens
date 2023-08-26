@@ -1,6 +1,6 @@
 # CRISPRi-dual-sgRNA-screens
 ## Fastq to counts
-This repository contains scripts for alignment of sequencing data from dual-sgRNA CRISPR screening data. These scripts were adapted from: https://github.com/mhorlbeck/ScreenProcessing
+This repository contains scripts for alignment of sequencing data from dual-sgRNA CRISPR screening data. These scripts were adapted from: https://github.com/mhorlbeck/ScreenProcessing as well as https://github.com/abearab/CRISPRi-dual-sgRNA-screens .
 
 For libraries with IBC, demultiplexing on only the i5 index using the i7 index (IBC) as a read is performed as detailed in : https://gist.github.com/sumeetg23/a064a36801d2763e94da2e191699fb9f. For alignment of data with IBC, use the python script `dualguide_UMI_fastqgz_to_counts.py`. Example command: 
 
@@ -36,14 +36,12 @@ The script will output two files of counts for each sample: *.all.aligned.counts
 
 *.AB.match.counts.txt contains the number of counts for sgRNA A - sgRNA B - IBC combinations aligned including only pairs denoted in the library table (excluding recombined pairs). The first column denotes the name of the name of the sgRNA A - sgRNA B - IBC combination where the names are separated by "++" delimiters. The second column denotes the number of reads aligning to this element.
 
-~~These output count files can be used to calculate the enrichment of each sgRNA between screen arms in python or MaGECK.~~
-
 These scripts will also output statistics detailing the (i) the number of reads that mapped to an sgRNA/IBC in the library by position and (ii) the number of reads with mapped sgRNAs that do not match the library and thus represent recombined reads to standard output. 
 
 ## Merge counts for multiple samples  
 This part will merge outputs into a table in which rows are each sgRNA-UMI combination and columns are sample names. 
 
-[//]: # (From this, we can then calculate the enrichment of each guide between screen arms in python or MaGECK.)
+[//]: # (From this, we can then calculate the enrichment of each guide between screen arms in using module 2. which employs DESeq2 and the Wald test between treatment and control input.)
 ```bash
 python module1/count_files_to_counts_matrix.py alignments results
 ```
