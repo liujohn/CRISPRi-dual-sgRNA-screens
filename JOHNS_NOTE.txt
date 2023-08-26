@@ -1,2 +1,2 @@
-The DESeq2 LTR test generates p values that are across all samples. We must use test="wald" in order to find pairwise sample (contrast) p values. 
+The DESeq2 LRT test generates p values that are across all samples. We must use test="Wald" in order to find pairwise sample (contrast) p values. 
 - John Liu 8/24/23
