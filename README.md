@@ -41,7 +41,9 @@ These scripts will also output statistics detailing the (i) the number of reads 
 ## Merge counts for multiple samples  
 This part will merge outputs into a table in which rows are each sgRNA-UMI combination and columns are sample names. 
 
-[//]: # (From this, we can then calculate the enrichment of each guide between screen arms in using module 2. which employs DESeq2 and the Wald test between treatment and control input.)
+From this, we can then calculate the enrichment of each guide between screen arms in using module 2. which employs DESeq2 and the Wald test between treatment and control input.
+
+[//]:
 ```bash
 python module1/count_files_to_counts_matrix.py alignments results
 ```
