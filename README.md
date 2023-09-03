@@ -1,6 +1,6 @@
 # CRISPRi-dual-sgRNA-screens
 ## Fastq to counts
-This repository contains scripts for alignment of sequencing data from dual-sgRNA CRISPR screening data. These scripts were adapted from: https://github.com/mhorlbeck/ScreenProcessing as well as https://github.com/abearab/CRISPRi-dual-sgRNA-screens .
+This repository contains scripts for alignment of sequencing data from dual-sgRNA CRISPR screening data. These scripts were adapted from: https://github.com/mhorlbeck/ScreenProcessing as well as https://github.com/abearab/CRISPRi-dual-sgRNA-screens . *Note, in Python 3.11 and later, iteritems() must be replaced with items() in the getMismatchDict function.
 
 For libraries with IBC, demultiplexing on only the i5 index using the i7 index (IBC) as a read is performed as detailed in : https://gist.github.com/sumeetg23/a064a36801d2763e94da2e191699fb9f. For alignment of data with IBC, use the python script `dualguide_UMI_fastqgz_to_counts.py`. Example command: 
 
