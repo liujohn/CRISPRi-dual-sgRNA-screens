@@ -8,8 +8,11 @@ import argparse
 import pandas as pd
 import string
 import re
+from collections import defaultdict
 
 def writeToCounts(fileTup):
+    print(f"Processing files: R1={fileTup[0]}, R2={fileTup[1]}, R3={fileTup[2]}")
+    sys.stdout.flush()
     print('\t'.join(fileTup[:-2]))
     sys.stdout.flush()
 
@@ -156,6 +159,25 @@ def matchBarcode(mismatch_dict, barcode, allowOneMismatch = True):
 
     return match
 
+def group_files_by_sample(inputFileList):
+    grouped_files = defaultdict(lambda: {})
+    for file_name in sorted(inputFileList):
+        match = re.search(r'([^/]+)_S(\d+)_R([123])_combined\.fastq\.gz', file_name)
+        if match:
+            sample_name, sample_num, r_num = match.groups()
+            unique_name = f"{sample_name}_S{sample_num}"
+            grouped_files[unique_name][f"R{r_num}"] = file_name
+        else:
+            print(f"Skipping file: {file_name}")
+
+    # Check if all R1, R2, and R3 files are present for each sample
+    for sample_name, files in grouped_files.items():
+        if 'R1' not in files or 'R2' not in files or 'R3' not in files:
+            raise ValueError(f"Missing files for sample {sample_name}. Files found: {files.keys()}")
+
+    return grouped_files
+
+
 testLines = 100000
 
 if __name__ == '__main__':
@@ -191,16 +213,19 @@ if __name__ == '__main__':
     'umi': getMismatchDict(umiTable, 'UMI', allowOneMismatch=True),
     }
 
+    grouped_files = group_files_by_sample(sorted(args.Seq_File_Names))
+
     fileTups = []
-    for i, fastqfile in enumerate(inputFileList):
-        if i%3 == 0:
-            r1file = fastqfile
-        elif i%3 == 1:
-            r2file = fastqfile
-        elif i%3 == 2:
-            r3file = fastqfile
-            outputfile = os.path.join(outputDirectory, re.split('_R\d+_0', os.path.split(fastqfile)[-1])[0])
-            fileTups.append((r1file, r2file, r3file, outputfile, combinedMismatchDicts, args.test))
+    for sample_name, files in grouped_files.items():
+        r1file = files['R1']
+        r2file = files['R2']
+        r3file = files['R3']
+        outputfile = os.path.join(outputDirectory, sample_name)
+        
+        # Debug print to show which files are being grouped together
+        print(f"Processing files: R1={r1file}, R2={r2file}, R3={r3file}, Output={outputfile}")
+
+        fileTups.append((r1file, r2file, r3file, outputfile, combinedMismatchDicts, args.test))
 
     pool = multiprocessing.Pool(len(fileTups))
 
