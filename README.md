@@ -39,7 +39,7 @@ The script will output two files of counts for each sample: *.all.aligned.counts
 These scripts will also output statistics detailing the (i) the number of reads that mapped to an sgRNA/IBC in the library by position and (ii) the number of reads with mapped sgRNAs that do not match the library and thus represent recombined reads to standard output. 
 
 ## Merge counts for multiple samples  
-This part will merge outputs into a table in which rows are each sgRNA-UMI combination and columns are sample names. 
+This part will merge outputs into a table in which rows are each sgRNA-UMI combination and columns are sample names. I recommend only using this script for non-UMI screens.
 
 ```bash
 python module1/count_files_to_counts_matrix.py alignments results
